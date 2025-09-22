@@ -1,42 +1,86 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Belizze Clinic Design System - Ultra Modern & Sophisticated */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
+    /* Core Colors - Belizze Palette */
+    --background: 0 0% 99%;
+    --foreground: 30 8% 15%;
+    
+    /* Sophisticated Neutrals */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
+    --card-foreground: 30 8% 15%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
+    --popover-foreground: 30 8% 15%;
+    
+    /* Rosé Gold & Elegant Tones */
+    --primary: 15 25% 70%;
+    --primary-foreground: 0 0% 100%;
+    --rose-gold: 15 45% 80%;
+    --rose-gold-metallic: 15 55% 75%;
+    --rose-gold-bright: 15 65% 70%;
+    
+    /* Nude & Beige Elegance */
+    --nude-elegant: 25 20% 85%;
+    --nude-warm: 30 15% 90%;
+    --beige-light: 35 25% 95%;
+    --beige-soft: 30 20% 92%;
+    
+    /* Sophisticated Grays */
+    --gray-soft: 20 10% 88%;
+    --gray-elegant: 25 8% 82%;
+    --gray-subtle: 20 6% 90%;
+    
+    /* Interactive States */
+    --secondary: 30 20% 92%;
+    --secondary-foreground: 30 8% 15%;
+    --muted: 35 25% 95%;
+    --muted-foreground: 30 15% 45%;
+    --accent: 15 45% 80%;
+    --accent-foreground: 0 0% 100%;
+    
+    /* Feedback Colors */
+    --destructive: 0 70% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    /* Borders & Inputs */
+    --border: 30 20% 90%;
+    --input: 30 25% 92%;
+    --ring: 15 45% 80%;
+    
+    /* Sophisticated Gradients */
+    --gradient-rose-gold: linear-gradient(135deg, hsl(15 55% 75%) 0%, hsl(25 45% 85%) 50%, hsl(35 35% 90%) 100%);
+    --gradient-elegant: linear-gradient(180deg, hsl(0 0% 100%) 0%, hsl(30 25% 97%) 100%);
+    --gradient-sophisticated: linear-gradient(135deg, hsl(25 20% 95%) 0%, hsl(15 25% 90%) 50%, hsl(30 30% 88%) 100%);
+    --gradient-hero: linear-gradient(135deg, hsl(0 0% 100% / 0.9) 0%, hsl(15 25% 95% / 0.8) 100%);
+    
+    /* Glassmorphism Effects */
+    --glass-light: hsl(0 0% 100% / 0.25);
+    --glass-elegant: hsl(30 20% 95% / 0.3);
+    --glass-sophisticated: hsl(15 25% 90% / 0.2);
+    
+    /* Advanced Shadows */
+    --shadow-elegant: 0 8px 32px -8px hsl(15 25% 70% / 0.15);
+    --shadow-sophisticated: 0 16px 48px -12px hsl(30 20% 60% / 0.2);
+    --shadow-rose-gold: 0 12px 40px -8px hsl(15 45% 75% / 0.25);
+    --shadow-glassmorphism: 0 8px 32px -8px hsl(0 0% 0% / 0.1);
+    
+    /* Blur Values */
+    --blur-light: 12px;
+    --blur-medium: 20px;
+    --blur-heavy: 40px;
+    
+    /* Animation Timings */
+    --transition-sophisticated: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-elegant: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    
+    --radius: 1rem;
 
     --sidebar-background: 0 0% 98%;
 
@@ -100,6 +144,139 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 500;
+  }
+}
+
+@layer components {
+  /* Sophisticated Button Variants */
+  .btn-rose-gold {
+    @apply bg-gradient-to-r from-rose-gold to-rose-gold-metallic text-white font-medium px-8 py-4 rounded-2xl shadow-rose-gold transition-all duration-500 ease-out hover:scale-105 hover:shadow-xl;
+  }
+
+  .btn-elegant {
+    @apply bg-gradient-to-r from-nude-elegant to-beige-light text-foreground font-medium px-6 py-3 rounded-xl border border-border shadow-elegant transition-all duration-500 ease-out hover:scale-102 hover:shadow-sophisticated;
+  }
+
+  .btn-glass {
+    @apply bg-glass-elegant backdrop-blur-md text-foreground font-medium px-6 py-3 rounded-xl border border-border/50 shadow-glassmorphism transition-all duration-500 ease-out hover:bg-glass-light hover:scale-102;
+  }
+
+  /* Card Variants */
+  .card-elegant {
+    @apply bg-card rounded-2xl p-8 shadow-elegant border border-border/50 transition-all duration-500 ease-out hover:scale-102 hover:shadow-sophisticated;
+  }
+
+  .card-glass {
+    @apply bg-glass-light backdrop-blur-md rounded-2xl p-6 border border-border/30 shadow-glassmorphism transition-all duration-500 ease-out hover:bg-glass-elegant;
+  }
+
+  .card-procedure {
+    @apply bg-gradient-to-br from-card to-beige-light rounded-2xl p-6 shadow-elegant border border-border/50 transition-all duration-500 ease-out hover:scale-105 hover:shadow-rose-gold cursor-pointer;
+  }
+
+  /* Text Styles */
+  .text-hero {
+    @apply text-5xl md:text-7xl font-light text-foreground leading-tight tracking-tight;
+  }
+
+  .text-elegant {
+    @apply text-lg text-muted-foreground leading-relaxed;
+  }
+
+  .text-sophisticated {
+    @apply text-base text-foreground/80 leading-relaxed;
+  }
+
+  /* Background Patterns */
+  .bg-hero {
+    background: var(--gradient-hero);
+  }
+
+  .bg-elegant {
+    background: var(--gradient-elegant);
+  }
+
+  .bg-sophisticated {
+    background: var(--gradient-sophisticated);
+  }
+
+  /* Animation Utilities */
+  .animate-fade-up {
+    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    opacity: 0;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  .animate-blur-in {
+    animation: blurIn 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    opacity: 0;
+    filter: blur(10px);
+  }
+
+  /* Glassmorphism Elements */
+  .glass-morphism {
+    background: var(--glass-elegant);
+    backdrop-filter: blur(var(--blur-medium));
+    border: 1px solid hsl(var(--border) / 0.3);
+  }
+
+  /* Hover Effects */
+  .hover-grow {
+    @apply transition-all duration-500 ease-out hover:scale-105;
+  }
+
+  .hover-glow {
+    @apply transition-all duration-500 ease-out hover:shadow-rose-gold;
+  }
+
+  .hover-blur-bg::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-rose-gold/20 to-nude-elegant/20 rounded-2xl opacity-0 transition-all duration-500 ease-out hover:opacity-100;
+    backdrop-filter: blur(var(--blur-light));
+  }
+}
+
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes blurIn {
+  to {
+    opacity: 1;
+    filter: blur(0);
   }
 }
