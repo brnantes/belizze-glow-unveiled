@@ -9,9 +9,9 @@ const Index = () => {
   return (
     <div className="overflow-x-hidden">
       <Hero />
-      <About />
-      <Procedures />
       <BeforeAfter />
+      <Procedures />
+      <About />
       <Testimonials />
       <Contact />
     </div>

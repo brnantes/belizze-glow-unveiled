@@ -50,7 +50,7 @@ export const BeforeAfter = () => {
   };
 
   return (
-    <section className="py-24 bg-background">
+    <section className="py-24 bg-elegant">
       <div className="container mx-auto px-6">
         {/* Section Header */}
         <div className="text-center mb-16 space-y-4">
@@ -67,108 +67,108 @@ export const BeforeAfter = () => {
           <div className="w-24 h-1 bg-gradient-to-r from-rose-gold to-rose-gold-metallic rounded-full mx-auto"></div>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Before/After Slider */}
-          <div className="animate-scale-in" style={{ animationDelay: '0.3s' }}>
-            <div className="card-elegant relative overflow-hidden">
-              {/* Image Container */}
-              <div className="relative h-96 overflow-hidden">
-                {/* Before Image */}
-                <img
-                  src={beforeAfterData[selectedImage].before}
-                  alt="Antes do procedimento"
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-                {/* After Image with Clip Path */}
-                <img
-                  src={beforeAfterData[selectedImage].after}
-                  alt="Depois do procedimento"
-                  className="absolute inset-0 w-full h-full object-cover"
-                  style={{
-                    clipPath: `polygon(${sliderPosition}% 0%, 100% 0%, 100% 100%, ${sliderPosition}% 100%)`
-                  }}
-                />
-                
-                {/* Slider Line */}
-                <div
-                  className="absolute top-0 bottom-0 w-1 bg-white shadow-lg z-10"
-                  style={{ left: `${sliderPosition}%` }}
-                >
-                  {/* Slider Handle */}
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center cursor-pointer">
-                    <svg className="w-4 h-4 text-rose-gold-metallic" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
-                    </svg>
-                  </div>
-                </div>
-
-                {/* Labels */}
-                <div className="absolute top-4 left-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
-                  Antes
-                </div>
-                <div className="absolute top-4 right-4 bg-rose-gold-metallic text-white px-3 py-1 rounded-full text-sm">
-                  Depois
+        {/* Before/After Slider - Agora em cima */}
+        <div className="animate-scale-in max-w-4xl mx-auto mb-12" style={{ animationDelay: '0.3s' }}>
+          <div className="card-elegant relative overflow-hidden">
+            {/* Image Container */}
+            <div className="relative h-96 md:h-[500px] overflow-hidden">
+              {/* Before Image */}
+              <img
+                src={beforeAfterData[selectedImage].before}
+                alt="Antes do procedimento"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              {/* After Image with Clip Path */}
+              <img
+                src={beforeAfterData[selectedImage].after}
+                alt="Depois do procedimento"
+                className="absolute inset-0 w-full h-full object-cover"
+                style={{
+                  clipPath: `polygon(${sliderPosition}% 0%, 100% 0%, 100% 100%, ${sliderPosition}% 100%)`
+                }}
+              />
+              
+              {/* Slider Line */}
+              <div
+                className="absolute top-0 bottom-0 w-1 bg-white shadow-lg z-10"
+                style={{ left: `${sliderPosition}%` }}
+              >
+                {/* Slider Handle */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center cursor-pointer">
+                  <svg className="w-4 h-4 text-rose-gold-metallic" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                  </svg>
                 </div>
               </div>
 
-              {/* Slider Control */}
-              <div className="p-4">
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={sliderPosition}
-                  onChange={handleSliderChange}
-                  className="w-full h-2 bg-gray-elegant rounded-lg appearance-none cursor-pointer slider"
-                  style={{
-                    background: `linear-gradient(to right, #f3f4f6 0%, #f3f4f6 ${sliderPosition}%, #d4a574 ${sliderPosition}%, #d4a574 100%)`
-                  }}
-                />
+              {/* Labels */}
+              <div className="absolute top-4 left-4 bg-black/50 text-white px-3 py-1 rounded-full text-sm">
+                Antes
               </div>
+              <div className="absolute top-4 right-4 bg-rose-gold-metallic text-white px-3 py-1 rounded-full text-sm">
+                Depois
+              </div>
+            </div>
 
-              {/* Procedure Info */}
-              <div className="p-6 bg-gradient-to-r from-beige-light to-nude-warm">
-                <h3 className="font-serif text-xl text-foreground mb-2">
-                  {beforeAfterData[selectedImage].procedure}
-                </h3>
-                <p className="text-sophisticated text-sm">
-                  {beforeAfterData[selectedImage].description}
-                </p>
-              </div>
+            {/* Slider Control */}
+            <div className="p-4">
+              <input
+                type="range"
+                min="0"
+                max="100"
+                value={sliderPosition}
+                onChange={handleSliderChange}
+                className="w-full h-2 bg-gray-elegant rounded-lg appearance-none cursor-pointer slider"
+                style={{
+                  background: `linear-gradient(to right, #f3f4f6 0%, #f3f4f6 ${sliderPosition}%, #d4a574 ${sliderPosition}%, #d4a574 100%)`
+                }}
+              />
+            </div>
+
+            {/* Procedure Info */}
+            <div className="p-6 bg-gradient-to-r from-beige-light to-nude-warm">
+              <h3 className="font-serif text-xl text-foreground mb-2">
+                {beforeAfterData[selectedImage].procedure}
+              </h3>
+              <p className="text-sophisticated text-sm">
+                {beforeAfterData[selectedImage].description}
+              </p>
             </div>
           </div>
+        </div>
 
-          {/* Gallery Thumbnails */}
-          <div className="space-y-6 animate-fade-in" style={{ animationDelay: '0.5s' }}>
-            <h3 className="font-serif text-2xl text-foreground">Explore mais resultados</h3>
-            
-            <div className="grid grid-cols-2 gap-4">
-              {beforeAfterData.map((item, index) => (
-                <div
-                  key={item.id}
-                  onClick={() => setSelectedImage(index)}
-                  className={`card-procedure cursor-pointer ${
-                    index === selectedImage ? 'ring-2 ring-rose-gold-metallic' : ''
-                  }`}
-                >
-                  <div className="grid grid-cols-2 gap-2 mb-3">
-                    <img
-                      src={item.before}
-                      alt={`${item.procedure} - Antes`}
-                      className="w-full h-20 object-cover rounded-lg"
-                    />
-                    <img
-                      src={item.after}
-                      alt={`${item.procedure} - Depois`}
-                      className="w-full h-20 object-cover rounded-lg"
-                    />
-                  </div>
-                  <h4 className="font-medium text-sm text-foreground">{item.procedure}</h4>
+        {/* Gallery Thumbnails - Agora embaixo */}
+        <div className="max-w-4xl mx-auto">
+          <h3 className="font-serif text-2xl text-foreground mb-6 text-center">Escolha um procedimento</h3>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-fade-in" style={{ animationDelay: '0.5s' }}>
+            {beforeAfterData.map((item, index) => (
+              <div
+                key={item.id}
+                onClick={() => setSelectedImage(index)}
+                className={`card-procedure cursor-pointer ${
+                  index === selectedImage ? 'ring-2 ring-rose-gold-metallic' : ''
+                }`}
+              >
+                <div className="grid grid-cols-2 gap-2 mb-3">
+                  <img
+                    src={item.before}
+                    alt={`${item.procedure} - Antes`}
+                    className="w-full h-20 object-cover rounded-lg"
+                  />
+                  <img
+                    src={item.after}
+                    alt={`${item.procedure} - Depois`}
+                    className="w-full h-20 object-cover rounded-lg"
+                  />
                 </div>
-              ))}
-            </div>
+                <h4 className="font-medium text-sm text-foreground text-center">{item.procedure}</h4>
+              </div>
+            ))}
+          </div>
 
-            {/* Trust Elements */}
+          {/* Trust Elements e CTA */}
+          <div className="grid md:grid-cols-2 gap-6 mt-12">
             <div className="card-glass p-6 space-y-4">
               <h4 className="font-serif text-xl text-foreground">Por que escolher a Belizze?</h4>
               <div className="space-y-3">
@@ -191,12 +191,11 @@ export const BeforeAfter = () => {
               </div>
             </div>
 
-            {/* CTA */}
-            <div className="text-center">
+            <div className="flex flex-col justify-center">
               <Button className="btn-rose-gold w-full">
                 Quero minha transformação
               </Button>
-              <p className="text-xs text-muted-foreground mt-2">
+              <p className="text-xs text-muted-foreground mt-2 text-center">
                 *Resultados podem variar. Consulte sempre um profissional.
               </p>
             </div>
