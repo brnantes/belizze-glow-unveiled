@@ -1,8 +1,8 @@
 import { Hero } from "@/components/Hero";
+import { ProceduresSupabase } from "@/components/ProceduresSupabase";
 import { BeforeAfterSupabase } from "@/components/BeforeAfterSupabase";
 import { Testimonials } from "@/components/Testimonials";
 import { LegacyPreview } from "@/components/LegacyPreview";
-import { AdminDirectAccess } from "@/components/AdminDirectAccess";
 import { Footer } from "@/components/Footer";
 
 const Index = () => {
@@ -10,13 +10,11 @@ const Index = () => {
     <div className="overflow-x-hidden">
       <Hero />
       <BeforeAfterSupabase />
+      <ProceduresSupabase />
       <LegacyPreview />
       <Testimonials />
       
       <Footer />
-      
-      {/* Acesso administrativo discreto no rodapé */}
-      <AdminDirectAccess />
     </div>
   );
 };

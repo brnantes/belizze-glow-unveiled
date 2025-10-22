@@ -1,0 +1,11 @@
+COMO ACESSAR O PAINEL ADMINISTRATIVO
+
+1. Substitua o arquivo App.tsx pelo arquivo App_admin.tsx
+2. Substitua o arquivo src/pages/Index.tsx pelo arquivo src/pages/Index_admin.tsx
+3. Reinicie o servidor de desenvolvimento
+4. Acesse a página inicial e você verá um botão "Painel Admin" no canto superior direito
+5. Clique neste botão para acessar o painel administrativo
+
+CREDENCIAIS DE ACESSO:
+Email: admin@belizze.com.br
+Senha: admin123

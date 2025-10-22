@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acesso Administrativo - Clínica Belizze</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 {
+            color: #d4a574;
+            margin-bottom: 20px;
+        }
+        .info-box {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .button {
+            background-color: #d4a574;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 0;
+            transition: background-color 0.3s;
+        }
+        .button:hover {
+            background-color: #c4956a;
+        }
+        .credentials {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .credentials p {
+            margin: 5px 0;
+        }
+        .credentials strong {
+            color: #d4a574;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Acesso Administrativo - Clínica Belizze</h1>
+        
+        <div class="info-box">
+            <p>Esta página permite acesso direto ao painel administrativo da Clínica Belizze.</p>
+            <p>Utilize as credenciais abaixo para fazer login:</p>
+        </div>
+        
+        <div class="credentials">
+            <p><strong>Email:</strong> admin@belizze.com.br</p>
+            <p><strong>Senha:</strong> admin123</p>
+        </div>
+        
+        <a href="/admin" class="button">Acessar Painel Administrativo</a>
+        
+        <div class="info-box">
+            <p><strong>Observação:</strong> Após o primeiro acesso, recomendamos alterar a senha padrão para uma senha mais segura.</p>
+        </div>
+    </div>
+</body>
+</html>

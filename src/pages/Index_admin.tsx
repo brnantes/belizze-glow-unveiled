@@ -1,22 +1,23 @@
 import { Hero } from "@/components/Hero";
-import { BeforeAfterSupabase } from "@/components/BeforeAfterSupabase";
+import { Procedures } from "@/components/Procedures";
+import { BeforeAfter } from "@/components/BeforeAfter";
 import { Testimonials } from "@/components/Testimonials";
 import { LegacyPreview } from "@/components/LegacyPreview";
-import { AdminDirectAccess } from "@/components/AdminDirectAccess";
 import { Footer } from "@/components/Footer";
+import { AdminButton } from "@/components/AdminButton";
 
 const Index = () => {
   return (
     <div className="overflow-x-hidden">
       <Hero />
-      <BeforeAfterSupabase />
+      <BeforeAfter />
+      <Procedures />
       <LegacyPreview />
       <Testimonials />
-      
       <Footer />
       
-      {/* Acesso administrativo discreto no rodapé */}
-      <AdminDirectAccess />
+      {/* Botão de acesso ao painel administrativo */}
+      <AdminButton />
     </div>
   );
 };
