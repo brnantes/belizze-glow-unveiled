@@ -6,12 +6,14 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { supabase } from "@/lib/supabase"; // Usado apenas para validação da tabela site_admins
 import { toast } from "sonner";
 import { BelizzeOfficialLogo } from "@/components/BelizzeOfficialLogo";
+import { useAdminLogger } from "@/hooks/useAdminLogger";
 
 const AdminLogin = () => {
-  const [email, setEmail] = useState("admin@belizze.com.br");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { logLogin } = useAdminLogger();
 
   useEffect(() => {
     // Verificar se já tem sessão no localStorage
@@ -26,41 +28,44 @@ const AdminLogin = () => {
     
     try {
       setLoading(true);
+      console.log(`🔐 Tentativa de login: ${email}`);
       
-      // Validar credenciais
-      if (email !== 'admin@belizze.com.br') {
-        throw new Error('Email não autorizado');
+      // Validar credenciais contra a tabela site_admins
+      const { data: adminData, error } = await supabase
+        .from('site_admins')
+        .select('email, password')
+        .eq('email', email)
+        .eq('password', password)
+        .maybeSingle();
+      
+      if (error) {
+        console.error('❌ Erro ao validar credenciais:', error);
+        throw new Error('Erro ao validar credenciais');
       }
       
-      if (password !== 'admin123') {
-        throw new Error('Senha incorreta');
+      if (!adminData) {
+        console.log('❌ Credenciais inválidas');
+        throw new Error('Email ou senha incorretos');
       }
       
-      // Tentar validar contra a tabela site_admins (se existir)
-      try {
-        const { data, error } = await supabase
-          .from('site_admins')
-          .select('email')
-          .eq('email', email)
-          .maybeSingle();
-        
-        // Se a tabela não existir ou houver erro, continuar mesmo assim
-        if (error && !error.message?.includes('site_admins')) {
-          console.warn('Erro ao validar contra tabela:', error);
-        }
-      } catch (tableError) {
-        console.warn('Tabela site_admins não disponível, usando credenciais padrão');
-      }
+      console.log('✅ Login válido para:', adminData.email);
       
       // Criar sessão no localStorage
       localStorage.setItem('admin_session', JSON.stringify({
-        email,
+        email: adminData.email,
         timestamp: new Date().toISOString()
       }));
       
       toast.success("Login realizado com sucesso!");
+      
+      // Registrar login no sistema de logs
+      setTimeout(() => {
+        logLogin();
+      }, 100);
+      
       navigate("/admin-dashboard", { replace: true });
     } catch (error: any) {
+      console.error('❌ Erro no login:', error);
       toast.error(`Erro: ${error.message}`);
     } finally {
       setLoading(false);

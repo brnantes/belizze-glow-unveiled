@@ -57,23 +57,51 @@ export const UserManager = () => {
       toast.error("Email é obrigatório");
       return;
     }
+
+    if (!newUserEmail.includes('@')) {
+      toast.error("Email deve ter um formato válido");
+      return;
+    }
+
+    if (!newUserPassword || newUserPassword.length < 6) {
+      toast.error("Senha deve ter pelo menos 6 caracteres");
+      return;
+    }
     
     try {
       setLoading(true);
+      console.log(`📧 Criando admin: ${newUserEmail}`);
       
-      const { error } = await supabase
+      // Verificar se o email já existe
+      const { data: existingAdmin } = await supabase
         .from('site_admins')
-        .insert([{ email: newUserEmail }]);
+        .select('email')
+        .eq('email', newUserEmail)
+        .single();
+
+      if (existingAdmin) {
+        toast.error("Este email já está cadastrado como admin");
+        return;
+      }
       
-      if (error) throw error;
+      const { data, error } = await supabase
+        .from('site_admins')
+        .insert([{ email: newUserEmail, password: newUserPassword }])
+        .select();
       
+      if (error) {
+        console.error("❌ Erro SQL:", error);
+        throw error;
+      }
+      
+      console.log("✅ Admin criado:", data);
       toast.success(`Admin ${newUserEmail} adicionado com sucesso!`);
       setNewUserEmail("");
       setNewUserPassword("");
       setIsDialogOpen(false);
       loadUsers();
     } catch (error: any) {
-      console.error("Erro ao adicionar admin:", error);
+      console.error("❌ Erro ao adicionar admin:", error);
       toast.error(`Erro ao adicionar admin: ${error.message}`);
     } finally {
       setLoading(false);
@@ -99,18 +127,26 @@ export const UserManager = () => {
     
     try {
       setLoading(true);
+      console.log(`🗑️ Deletando admin: ${email} (ID: ${userId})`);
       
       const { error } = await supabase
         .from('site_admins')
         .delete()
         .eq('id', userId);
       
-      if (error) throw error;
+      if (error) {
+        console.error("❌ Erro SQL ao deletar:", error);
+        throw error;
+      }
       
+      console.log("✅ Admin deletado com sucesso");
       toast.success(`Admin ${email} excluído com sucesso!`);
-      loadUsers();
+      
+      // Atualizar lista removendo o usuário deletado
+      setUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
+      
     } catch (error: any) {
-      console.error("Erro ao excluir admin:", error);
+      console.error("❌ Erro ao excluir admin:", error);
       toast.error(`Erro ao excluir admin: ${error.message}`);
     } finally {
       setLoading(false);
@@ -171,6 +207,17 @@ export const UserManager = () => {
                       value={newUserEmail}
                       onChange={(e) => setNewUserEmail(e.target.value)}
                       placeholder="admin@exemplo.com"
+                      required
+                    />
+                  </div>
+                  <div className="grid gap-2">
+                    <Label htmlFor="password">Senha</Label>
+                    <Input
+                      id="password"
+                      type="password"
+                      value={newUserPassword}
+                      onChange={(e) => setNewUserPassword(e.target.value)}
+                      placeholder="Digite uma senha segura"
                       required
                     />
                   </div>

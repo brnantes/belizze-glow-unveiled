@@ -185,3 +185,22 @@ export const updateLeadStatus = async (leadId: string, status: 'new' | 'contacte
     return { success: false, error: error.message };
   }
 };
+
+/**
+ * Deleta um lead de mentoria
+ */
+export const deleteMentorshipLead = async (leadId: string) => {
+  try {
+    const { error } = await supabase
+      .from('mentorship_leads')
+      .delete()
+      .eq('id', leadId);
+
+    if (error) throw error;
+    
+    return { success: true };
+  } catch (error: any) {
+    console.error('❌ Erro ao deletar lead:', error);
+    return { success: false, error: error.message };
+  }
+};

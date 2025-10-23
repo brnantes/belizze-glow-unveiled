@@ -5,8 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { RefreshCw, Eye, MessageCircle, Calendar, X, Clock } from "lucide-react";
-import { MentorshipLead, getMentorshipLeads, updateLeadStatus, getMentorshipWebhookUrl, setMentorshipWebhookUrl } from "@/lib/mentorshipLeads";
+import { RefreshCw, Eye, MessageCircle, Calendar, X, Clock, Trash2 } from "lucide-react";
+import { MentorshipLead, getMentorshipLeads, updateLeadStatus, getMentorshipWebhookUrl, setMentorshipWebhookUrl, deleteMentorshipLead } from "@/lib/mentorshipLeads";
 import { toast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -26,6 +26,7 @@ export const MentorshipLeadsManager = () => {
   const loadLeads = async () => {
     setLoading(true);
     const result = await getMentorshipLeads();
+    
     if (result.success) {
       setLeads(result.data || []);
     } else {
@@ -73,6 +74,28 @@ export const MentorshipLeadsManager = () => {
       setNotes("");
     } else {
       toast.error("Erro ao atualizar status");
+    }
+  };
+
+  // Deletar lead
+  const handleDelete = async (lead: MentorshipLead) => {
+    if (!confirm(`Tem certeza que deseja excluir o lead de ${lead.name}?`)) {
+      return;
+    }
+    
+    const result = await deleteMentorshipLead(lead.id!);
+    
+    if (result.success) {
+      toast.success("Lead excluído com sucesso!");
+      
+      // Atualizar estado diretamente para resposta imediata
+      setLeads(prevLeads => prevLeads.filter(l => l.id !== lead.id));
+      setExpandedLead(null);
+      
+      // Recarregar do banco para garantir sincronização
+      await loadLeads();
+    } else {
+      toast.error(`Erro ao excluir lead: ${result.error || 'Erro desconhecido'}`);
     }
   };
 
@@ -284,6 +307,14 @@ export const MentorshipLeadsManager = () => {
                         >
                           <X className="h-4 w-4 mr-1" />
                           Marcar como Rejeitado
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          variant="destructive" 
+                          onClick={() => handleDelete(lead)}
+                        >
+                          <Trash2 className="h-4 w-4 mr-1" />
+                          Excluir
                         </Button>
                       </div>
                     </div>

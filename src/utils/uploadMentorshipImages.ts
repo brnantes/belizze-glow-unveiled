@@ -1,9 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = 'https://wgamkjtlvebwquuxxqwu.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndnYW1ranRsdmVid3F1dXh4cXd1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTcyODk5NzQ2MSwiZXhwIjoyMDQ0NTczNDYxfQ.tMlVFzJFVLqFYhCqTzJVgMFnEKgHBnGDZgHQBzjvWTk';
-
-const supabase = createClient(supabaseUrl, supabaseKey);
+import { supabase } from '@/lib/supabase';
 
 // Função para converter File para ArrayBuffer
 const fileToArrayBuffer = (file: File): Promise<ArrayBuffer> => {

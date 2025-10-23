@@ -25,6 +25,12 @@
     --rose-gold-metallic: 15 55% 75%;
     --rose-gold-bright: 15 65% 70%;
     
+    /* Golden Luxury Palette */
+    --golden-luxury: 45 85% 65%;
+    --golden-cream: 50 60% 90%;
+    --golden-shimmer: 48 75% 70%;
+    --golden-soft: 52 45% 85%;
+    
     /* Nude & Beige Elegance */
     --nude-elegant: 25 20% 85%;
     --nude-warm: 30 15% 90%;
@@ -158,6 +164,10 @@
   /* Sophisticated Button Variants */
   .btn-rose-gold {
     @apply bg-gradient-to-r from-rose-gold to-rose-gold-metallic text-white font-medium px-8 py-4 rounded-2xl shadow-rose-gold transition-all duration-500 ease-out hover:scale-105 hover:shadow-xl;
+  }
+
+  .btn-golden-rose {
+    @apply bg-gradient-to-r from-golden-luxury to-rose-gold-metallic text-white font-medium px-8 py-4 rounded-2xl shadow-lg transition-all duration-500 ease-out hover:scale-105 hover:shadow-xl hover:from-golden-shimmer hover:to-rose-gold-bright;
   }
 
   .btn-elegant {

@@ -27,6 +27,7 @@ export const Header = () => {
           <a href="/" className="text-sm font-medium text-white hover:text-[#f5e1d5] transition-colors">Início</a>
           <a href="/legado" className="text-sm font-medium text-white hover:text-[#f5e1d5] transition-colors">Legado</a>
           <a href="/mentoria" className="text-sm font-medium text-white hover:text-[#f5e1d5] transition-colors">Mentoria</a>
+          <a href="/agendamento" className="text-sm font-medium text-white hover:text-[#f5e1d5] transition-colors">Agendamento</a>
         </nav>
         <a href="/" aria-label="Belizze" className="flex items-center px-2 py-1 rounded-md bg-white/10">
           <BelizzeSimpleLogo />
@@ -65,13 +66,16 @@ export const Header = () => {
               <a href="/mentoria" className="text-white font-medium py-2 px-3 rounded-md hover:bg-white/10 transition-colors">
                 Mentoria
               </a>
+              <a href="/agendamento" className="text-white font-medium py-2 px-3 rounded-md hover:bg-white/10 transition-colors">
+                Agendamento
+              </a>
               <a 
                 href="https://wa.me/5567992436211?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20consulta%20na%20Belizze."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white font-medium py-2 px-3 rounded-md bg-rose-gold/30 hover:bg-rose-gold/50 transition-colors mt-2"
               >
-                Agendar Consulta
+                WhatsApp Direto
               </a>
             </div>
           </div>

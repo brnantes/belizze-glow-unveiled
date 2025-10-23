@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { saveMentorshipLead, sendLeadToWebhook } from "@/lib/mentorshipLeads";
 import { Loader2 } from "lucide-react";
+import { formatPhoneNumber, removePhoneMask, isValidPhoneNumber } from "@/utils/phoneMask";
 
 const MentorshipForm = () => {
   const { toast } = useToast();
@@ -24,9 +25,16 @@ const MentorshipForm = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+    let processedValue = value;
+    
+    // Aplicar máscara no WhatsApp
+    if (name === 'whatsapp') {
+      processedValue = formatPhoneNumber(value);
+    }
+    
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: processedValue
     }));
   };
 
@@ -48,6 +56,17 @@ const MentorshipForm = () => {
       return;
     }
 
+    // Validate phone number
+    if (!isValidPhoneNumber(formData.whatsapp)) {
+      toast({
+        title: "Telefone inválido",
+        description: "Por favor, digite um número de WhatsApp válido com DDD (11 dígitos).",
+        variant: "destructive",
+      });
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
       // 1. Salvar os dados no Supabase
       const leadData = {
@@ -57,7 +76,7 @@ const MentorshipForm = () => {
         family_routine: formData.familyRoutine,
         education: formData.education,
         experience: formData.experience,
-        whatsapp: formData.whatsapp,
+        whatsapp: removePhoneMask(formData.whatsapp), // Remove máscara antes de salvar
         email: formData.email
       };
       
@@ -240,9 +259,11 @@ const MentorshipForm = () => {
             <Input
               id="whatsapp"
               name="whatsapp"
+              type="tel"
               value={formData.whatsapp}
               onChange={handleInputChange}
-              placeholder="(67) 99999-9999"
+              placeholder="(11) 99999-9999"
+              maxLength={15}
               required
               className="bg-background/50 border-rose-gold/20 focus:border-rose-gold"
             />

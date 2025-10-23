@@ -3,7 +3,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { supabase } from "@/lib/supabase";
-import { uploadImageAdmin, deleteImageAdmin, supabaseAdmin } from "@/lib/supabaseAdmin";
+import { deleteImageDirect } from "@/lib/storageDelete";
+import { uploadImageToStorage } from "@/lib/storageUtils";
 import { toast } from "sonner";
 import { Upload, Image as ImageIcon, Trash2, Copy, Check, RefreshCw } from "lucide-react";
 
@@ -32,17 +33,9 @@ export const SiteImagesManager = () => {
 
   const loadImages = async () => {
     try {
-      // Adicionar timestamp para evitar cache
-      const cacheBuster = Date.now();
       const buckets = ['site-images', 'mentorship', 'before_after'];
       const allImages: SiteImage[] = [];
-      const seenImages = new Set<string>(); // Para evitar duplicatas
-      
-      // Verificar imagens excluídas no localStorage para não exibi-las
-      const deletedImagesKey = 'belizze_deleted_images';
-      const deletedImages = new Set(
-        JSON.parse(localStorage.getItem(deletedImagesKey) || '[]')
-      );
+      const seenImages = new Set<string>();
 
       for (const bucketName of buckets) {
         try {
@@ -74,12 +67,6 @@ export const SiteImagesManager = () => {
               
               console.log(`🔍 Processando arquivo: ${file.name} (isImage: ${isImage})`);
               
-              // Verificar se a imagem foi excluída anteriormente
-              if (deletedImages.has(uniqueKey)) {
-                console.log(`🚫 Imagem previamente excluída ignorada: ${uniqueKey}`);
-                return false;
-              }
-              
               if (!isImage) {
                 console.log(`⚠️ Ignorando arquivo não-imagem: ${file.name}`);
                 return false;
@@ -107,11 +94,17 @@ export const SiteImagesManager = () => {
               console.log(`✅ Imagem aceita: ${uniqueKey}`);
               return true;
             })
-            .map(file => ({
-              name: file.name,
-              url: `${supabase.storage.from(bucketName).getPublicUrl(file.name).data.publicUrl}?t=${Date.now()}`,
-              bucket: bucketName
-            }));
+            .map(file => {
+              const publicUrl = supabase.storage.from(bucketName).getPublicUrl(file.name).data.publicUrl;
+              if (file.name === '30.JPG') {
+                console.log(`🔍 URL gerada para 30.JPG: ${publicUrl}`);
+              }
+              return {
+                name: file.name,
+                url: publicUrl,
+                bucket: bucketName
+              };
+            });
 
           allImages.push(...bucketImages);
           console.log(`✅ ${bucketName}: adicionadas ${bucketImages.length} imagens únicas`);
@@ -138,11 +131,9 @@ export const SiteImagesManager = () => {
   const handleUpload = async (imageName: string, file: File) => {
     try {
       setUploading(imageName);
-
       console.log(`Iniciando upload de ${imageName}...`);
       
-      // Usar a função administrativa para upload
-      const { url, error } = await uploadImageAdmin('site-images', imageName, file);
+      const { url, error } = await uploadImageToStorage('site-images', imageName, file);
 
       if (error) {
         throw new Error(error);
@@ -164,7 +155,7 @@ export const SiteImagesManager = () => {
     setUploading('new-image');
     
     try {
-      const { url, error } = await uploadImageAdmin('site-images', fileName, file);
+      const { url, error } = await uploadImageToStorage('site-images', fileName, file);
 
       if (error) {
         throw new Error(error);
@@ -186,8 +177,7 @@ export const SiteImagesManager = () => {
     setReplacingImage(replaceKey);
     
     try {
-      // Upload da nova imagem com o mesmo nome
-      const { url, error } = await uploadImageAdmin(bucketName, imageName, file);
+      const { url, error } = await uploadImageToStorage(bucketName, imageName, file);
 
       if (error) {
         throw new Error(error);
@@ -206,41 +196,24 @@ export const SiteImagesManager = () => {
 
   const handleDelete = async (imageName: string, bucketName: string) => {
     try {
-      // Desabilitar a interface durante a exclusão
-      const deleteButton = document.querySelector(`button[data-delete-image="${bucketName}/${imageName}"]`);
-      if (deleteButton) {
-        deleteButton.setAttribute('disabled', 'true');
-        deleteButton.innerHTML = '<span class="animate-spin">⏳</span>';
+      console.log(`🗑️ Iniciando deleção de ${imageName}...`);
+      
+      // Tentar deletar do storage
+      const { success, error } = await deleteImageDirect(bucketName, imageName);
+      
+      if (!success) {
+        console.error(`❌ Falha ao deletar ${imageName}:`, error);
+        toast.error(`Erro ao excluir ${imageName}: ${error}`);
+        return;
       }
       
-      // Remover imediatamente da interface para feedback visual
+      // Sucesso confirmado - agora remover da UI
+      console.log(`✅ ${imageName} deletado com sucesso do storage`);
       setImages(prevImages => prevImages.filter(img => !(img.name === imageName && img.bucket === bucketName)));
       
-      // Usar a função administrativa robusta que tenta múltiplos métodos
-      const { success, error } = await deleteImageAdmin(bucketName, imageName);
-      
-      // Restaurar o botão de exclusão se ainda existir
-      if (deleteButton) {
-        deleteButton.removeAttribute('disabled');
-        deleteButton.innerHTML = '<svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>';
-      }
-      
-      if (success) {
-        // Sucesso confirmado
-        toast.success(`${imageName} excluído com sucesso!`);
-        
-        // Armazenar em localStorage que a imagem foi excluída para evitar que reapareça
-        const deletedImagesKey = 'belizze_deleted_images';
-        const deletedImages = JSON.parse(localStorage.getItem(deletedImagesKey) || '[]');
-        deletedImages.push(`${bucketName}/${imageName}`);
-        localStorage.setItem(deletedImagesKey, JSON.stringify(deletedImages));
-      } else {
-        // Falha na exclusão
-        console.error(`Falha ao excluir ${imageName}:`, error);
-        toast.error(`Erro ao excluir ${imageName}: ${error}`);
-      }
+      toast.success(`${imageName} excluído com sucesso!`);
     } catch (error: any) {
-      console.error('Erro completo ao excluir:', error);
+      console.error('❌ Erro ao excluir:', error);
       toast.error(`Erro ao excluir ${imageName}: ${error.message}`);
     }
   };
@@ -278,8 +251,20 @@ export const SiteImagesManager = () => {
                   src={image.url}
                   alt={image.name}
                   className="w-full h-32 object-cover group-hover:opacity-75 transition-opacity"
+                  crossOrigin="anonymous"
                   onError={(e) => {
-                    console.log(`❌ Erro ao carregar imagem: ${image.name} - URL: ${image.url}`);
+                    console.log(`❌ Erro ao carregar imagem: ${image.name}`);
+                    console.log(`   URL: ${image.url}`);
+                    console.log(`   Tentando fallback...`);
+                    
+                    // Tentar com cache buster como fallback
+                    if (!e.currentTarget.src.includes('?t=')) {
+                      e.currentTarget.src = `${image.url}?t=${Date.now()}`;
+                      return;
+                    }
+                    
+                    // Se ainda falhar, mostrar erro
+                    console.log(`   Status: ${(e.currentTarget as HTMLImageElement).naturalWidth === 0 ? 'Falha de rede/CORS' : 'Arquivo inválido'}`);
                     e.currentTarget.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22100%22 height=%22100%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 fill=%22%23999%22 font-size=%2212%22%3EErro ao carregar%3C/text%3E%3C/svg%3E';
                   }}
                   onLoad={() => console.log(`✅ Imagem carregada: ${image.name}`)}

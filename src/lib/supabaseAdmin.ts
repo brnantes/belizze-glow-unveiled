@@ -12,7 +12,8 @@ export const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
   auth: {
     autoRefreshToken: false,
     persistSession: false,
-    detectSessionInUrl: false
+    detectSessionInUrl: false,
+    storage: undefined
   },
   global: {
     headers: {

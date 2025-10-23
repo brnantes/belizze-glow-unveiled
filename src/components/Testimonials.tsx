@@ -206,19 +206,6 @@ export const Testimonials = () => {
           </div>
         </div>
 
-        {/* CTA Section */}
-        <div className="text-center mt-16 animate-scale-in" style={{ animationDelay: '0.8s' }}>
-          <div className="card-glass p-8 max-w-2xl mx-auto">
-            <h3 className="font-serif text-2xl mb-4">Seja a próxima a se sentir radiante!</h3>
-            <p className="text-sophisticated mb-6">
-              Junte-se às centenas de mulheres que já descobriram o poder transformador 
-              dos nossos tratamentos de harmonização facial.
-            </p>
-            <Button className="btn-rose-gold">
-              Agendar minha transformação
-            </Button>
-          </div>
-        </div>
       </div>
     </section>
   );

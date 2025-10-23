@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import Legacy from "./pages/Legacy";
 import Mentorship from "./pages/Mentorship";
 import MentorshipThankYou from "./pages/MentorshipThankYou";
+import Agendamento from "./pages/Agendamento";
 import UploadImages from "./pages/UploadImages";
 import AdminProfessional from "./pages/AdminProfessional";
 import AdminLogin from "./pages/AdminLogin";
@@ -50,6 +51,7 @@ const App = () => (
                   <Route path="/legado" element={<Legacy />} />
                   <Route path="/mentoria" element={<Mentorship />} />
                   <Route path="/mentoria-agradecimento" element={<MentorshipThankYou />} />
+                  <Route path="/agendamento" element={<Agendamento />} />
                   <Route path="/upload-images" element={<UploadImages />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
